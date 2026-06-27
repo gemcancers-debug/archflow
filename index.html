@@ -3,136 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArchFlow | تولید لایه‌بندی و ورک‌فلو</title>
+    <title>PromptArch | پرامپت‌ساز حرفه‌ای هوش مصنوعی</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&amp;display=swap');
         body { font-family: 'Vazirmatn', system-ui, sans-serif; }
-        .layer-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .layer-card:hover { transform: translateY(-4px); }
-        .mermaid { background: white; padding: 20px; border-radius: 16px; }
-        .dark .mermaid { background: #18181b; }
+        .prompt-box {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            line-height: 1.7;
+        }
+        .section-title { font-size: 1.1rem; letter-spacing: -.025em; }
     </style>
 </head>
 <body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
     <header class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+        <div class="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
             <div class="flex items-center gap-x-4">
-                <div class="w-12 h-12 bg-violet-600 rounded-3xl flex items-center justify-center shadow-inner">
-                    <i class="fa-solid fa-sitemap text-white text-3xl"></i>
+                <div class="w-11 h-11 bg-violet-600 rounded-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-magic text-white text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-4xl font-bold tracking-tighter">ArchFlow</h1>
-                    <p class="text-xs text-zinc-500 -mt-1">تولید معماری و ورک‌فلو</p>
+                    <h1 class="text-3xl font-bold tracking-tight">PromptArch</h1>
+                    <p class="text-xs text-zinc-500 -mt-1">پرامپت حرفه‌ای برای تولید محتوا</p>
                 </div>
             </div>
             <div class="flex items-center gap-x-3">
-                <button onclick="toggleDarkMode()" class="px-5 py-2.5 text-sm rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center gap-x-2">
+                <button onclick="toggleDarkMode()" class="px-4 py-2 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 flex items-center gap-x-2 text-sm">
                     <i class="fa-solid fa-moon dark:hidden"></i>
                     <i class="fa-solid fa-sun hidden dark:block"></i>
                 </button>
-                <div class="text-right text-sm">
-                    <div class="font-semibold">حامد فریفته</div>
+                <div class="text-right">
+                    <div class="text-sm font-semibold">حامد فریفته</div>
                     <div class="text-[10px] text-zinc-500">Developer</div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="max-w-6xl mx-auto px-6 pt-10 pb-16">
-        <!-- Hero -->
-        <div class="text-center mb-10">
-            <h2 class="text-5xl font-bold tracking-tighter mb-3">ایده‌ات رو بده،<br>معماریش رو بگیر</h2>
-            <p class="text-xl text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">لایه‌بندی معماری + ورک‌فلو بصری + پیشنهاد تکنولوژی</p>
+    <div class="max-w-5xl mx-auto px-6 pt-10 pb-20">
+        <div class="max-w-2xl mx-auto text-center mb-10">
+            <h2 class="text-5xl font-bold tracking-tighter mb-4">موضوع بده.<br>پرامپت حرفه‌ای بگیر.</h2>
+            <p class="text-xl text-zinc-600 dark:text-zinc-400">پرامپت‌های عمیق، غیرکلیشه‌ای و پرجزویه برای هوشهای مصنوعی</p>
         </div>
 
-        <!-- Input Form -->
-        <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-8 mb-10 shadow-sm">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="lg:col-span-2">
-                    <label class="block text-sm font-medium mb-2 text-zinc-600 dark:text-zinc-400">عنوان ایده نرم‌افزار</label>
-                    <input id="idea-title" type="text" value="اپلیکیشن فروشگاه آنلاین لباس" 
-                           class="w-full px-5 py-4 text-lg rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-none focus:border-violet-500">
-                </div>
-
-                <div class="lg:col-span-2">
-                    <label class="block text-sm font-medium mb-2 text-zinc-600 dark:text-zinc-400">توضیح کوتاه ایده</label>
-                    <textarea id="idea-desc" rows="3" class="w-full px-5 py-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-none focus:border-violet-500"> یک فروشگاه آنلاین که کاربران بتوانند لباس بخرند، سبد خرید داشته باشند و پرداخت انجام بدهند.</textarea>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-2 text-zinc-600 dark:text-zinc-400">پلتفرم هدف</label>
-                    <select id="platform" class="w-full px-5 py-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950">
-                        <option value="web">وب (Web App)</option>
-                        <option value="mobile">موبایل (اندروید / iOS)</option>
-                        <option value="desktop">دسکتاپ</option>
-                        <option value="cross">مولتی پلتفرم</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium mb-2 text-zinc-600 dark:text-zinc-400">ویژگی‌های کلیدی (جدا کنید با ویرگول)</label>
-                    <input id="features" type="text" value="ثبت‌نام، سبد خرید، پرداخت آنلاین، پنل مدیریت کاربر" 
-                           class="w-full px-5 py-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950">
-                </div>
+        <!-- Input -->
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 mb-8">
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2 text-zinc-600 dark:text-zinc-400">موضوع (حداکثر ۱۰ کلمه)</label>
+                <input id="topic" type="text" value="تأثیر موسیقی بر مغز انسان" 
+                       class="w-full px-6 py-4 text-xl rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-none focus:border-violet-500"
+                       placeholder="مثال: تأثیر موسیقی بر مغز انسان">
             </div>
 
-            <button onclick="generateArchitecture()" 
-                    class="mt-8 w-full py-4 bg-violet-600 hover:bg-violet-700 active:bg-violet-800 transition-all text-white text-lg font-semibold rounded-3xl flex items-center justify-center gap-x-3 shadow-lg shadow-violet-600/30">
+            <button onclick="generatePrompt()" 
+                    class="w-full py-4 bg-violet-600 hover:bg-violet-700 transition-all text-white text-lg font-semibold rounded-3xl flex items-center justify-center gap-x-3">
                 <i class="fa-solid fa-magic"></i>
-                <span>تولید لایه‌بندی و ورک‌فلو</span>
+                <span>تولید پرامپت حرفه‌ای</span>
             </button>
         </div>
 
-        <!-- Results Section -->
-        <div id="results" class="hidden">
-            <!-- Architecture Layers -->
-            <div class="mb-10">
-                <h3 class="text-2xl font-bold mb-6 flex items-center gap-x-3">
-                    <i class="fa-solid fa-layer-group text-violet-500"></i> 
-                    لایه‌بندی معماری
-                </h3>
-                <div id="layers-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Populated by JS -->
-                </div>
+        <!-- Output -->
+        <div id="result" class="hidden">
+            <div class="flex items-center justify-between mb-4 px-1">
+                <div class="font-semibold text-xl">پرامپت تولید شده</div>
+                <button onclick="copyPrompt()" class="flex items-center gap-x-2 px-5 py-2 text-sm rounded-2xl bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white hover:bg-black transition-colors">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>کپی پرامپت</span>
+                </button>
             </div>
 
-            <!-- Workflow Diagram -->
-            <div class="mb-10">
-                <h3 class="text-2xl font-bold mb-6 flex items-center gap-x-3">
-                    <i class="fa-solid fa-project-diagram text-violet-500"></i> 
-                    ورک‌فلو اصلی کاربر
-                </h3>
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8">
-                    <div id="mermaid-diagram" class="mermaid"></div>
-                </div>
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8">
+                <pre id="prompt-output" class="prompt-box whitespace-pre-wrap text-sm leading-relaxed text-zinc-800 dark:text-zinc-200"></pre>
             </div>
 
-            <!-- Tech Stack & Steps -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Tech Stack -->
-                <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-x-3">
-                        <i class="fa-solid fa-microchip text-violet-500"></i> 
-                        پیشنهاد استک تکنولوژی
-                    </h3>
-                    <div id="tech-stack" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-7 space-y-4">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
-
-                <!-- Development Steps -->
-                <div>
-                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-x-3">
-                        <i class="fa-solid fa-list-check text-violet-500"></i> 
-                        مراحل توسعه پیشنهادی
-                    </h3>
-                    <div id="dev-steps" class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-7 space-y-4">
-                        <!-- Populated by JS -->
-                    </div>
-                </div>
+            <div class="mt-6 text-center">
+                <button onclick="generatePrompt()" class="text-sm text-violet-600 hover:text-violet-500 flex items-center gap-x-2 mx-auto">
+                    <i class="fa-solid fa-redo"></i>
+                    <span>تولید پرامپت جدید</span>
+                </button>
             </div>
         </div>
     </div>
@@ -146,182 +95,76 @@
             document.documentElement.classList.toggle('dark');
         }
 
-        function generateArchitecture() {
-            const title = document.getElementById('idea-title').value.trim();
-            const desc = document.getElementById('idea-desc').value.trim();
-            const platform = document.getElementById('platform').value;
-            const featuresInput = document.getElementById('features').value;
-
-            if (!title) {
-                alert('لطفاً عنوان ایده را وارد کنید');
+        function generatePrompt() {
+            const topic = document.getElementById('topic').value.trim();
+            if (!topic) {
+                alert('لطفاً موضوع را وارد کنید');
                 return;
             }
 
-            const features = featuresInput.split(',').map(f => f.trim()).filter(Boolean);
-
-            // Show results
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-
-            // Generate Layers
-            generateLayers(title, desc, platform, features);
-
-            // Generate Mermaid Workflow
-            generateWorkflowDiagram(title, features);
-
-            // Generate Tech Stack
-            generateTechStack(platform, features);
-
-            // Generate Development Steps
-            generateDevSteps(title, platform);
+            const prompt = createHighQualityPrompt(topic);
+            
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('prompt-output').textContent = prompt;
+            
+            // Scroll to result
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function generateLayers(title, desc, platform, features) {
-            const container = document.getElementById('layers-container');
-            container.innerHTML = '';
+        function createHighQualityPrompt(topic) {
+            return `You are an exceptionally deep, original, and intellectually rigorous thinker and writer. Your task is to write a profound, non-cliché, and intellectually stimulating article about the following topic:
 
-            const layers = [
-                {
-                    name: 'لایه پرزنتیشن (Frontend)',
-                    icon: 'fa-desktop',
-                    color: 'violet',
-                    desc: 'رابط کاربری و نمایش داده‌ها. مسئول از نمایش و تعامل با کاربر.'
-                },
-                {
-                    name: 'لایه کاربرد (Business Logic)',
-                    icon: 'fa-cogs',
-                    color: 'indigo',
-                    desc: 'منطق اصلی نرم‌افزار. پردازش داده‌ها، قانون‌ها و فرآیندهای کسب‌وکار.'
-                },
-                {
-                    name: 'لایه دسترسی به داده (Data Layer)',
-                    icon: 'fa-database',
-                    color: 'emerald',
-                    desc: 'مدیریت داده‌ها و ارتباط با پایگاه داده. ذخیره‌سازی و بازیابی.'
+"${topic}"
+
+**Core Requirements:**
+
+1. **Avoid all clichés and superficial content.** Do not repeat common ideas that appear in most articles on this subject. Dig deeper.
+
+2. **Incorporate multiple intellectual traditions and perspectives:**
+   - Draw from major philosophers (Western and Eastern) such as Nietzsche, Aristotle, Ibn Sina (Avicenna), Rumi, Heidegger, and others where relevant.
+   - Include insights from cognitive science, neuroscience, psychology, and anthropology.
+   - Reference ancient civilizations and their wisdom (Persian, Greek, Indian, Chinese, Mesopotamian, etc.) where it adds depth.
+   - Explore "buried" or lesser-known knowledge from historical texts and traditions.
+
+3. **Structure the article with intellectual depth:**
+   - Start with a powerful, thought-provoking opening that challenges common assumptions.
+   - Explore multiple angles and tensions (e.g., individual vs collective, ancient vs modern, rational vs intuitive).
+   - Include surprising connections between seemingly unrelated fields.
+   - End with genuine insight rather than generic conclusions.
+
+4. **Tone and Style:**
+   - Write in an elegant, precise, and intellectually honest voice.
+   - Balance scholarly depth with accessibility.
+   - Use vivid but non-sentimental language.
+   - Aim for originality and intellectual courage.
+
+5. **Research Integration:**
+   - Weave in the latest relevant scientific and cognitive research (cite specific studies or findings when possible).
+   - Contrast modern scientific understanding with ancient philosophical insights.
+
+Write the article in Persian. Make it between 1200-1800 words. Focus on depth, originality, and intellectual richness rather than breadth.
+
+Begin.`;
+        }
+
+        function copyPrompt() {
+            const text = document.getElementById('prompt-output').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btns = document.querySelectorAll('#result button');
+                if (btns.length > 0) {
+                    const originalText = btns[0].innerHTML;
+                    btns[0].innerHTML = '<i class="fa-solid fa-check"></i> <span>کپی شد</span>';
+                    setTimeout(() => {
+                        btns[0].innerHTML = originalText;
+                    }, 2000);
                 }
-            ];
-
-            // Add extra layer based on platform
-            if (platform === 'mobile' || platform === 'cross') {
-                layers.push({
-                    name: 'لایه موبایل / Native',
-                    icon: 'fa-mobile-alt',
-                    color: 'amber',
-                    desc: 'مدیریت ویژگی‌های خاص موبایل مانند نوتیفیکیشن، دسترسی به هاردوار و آفلاین.'
-                });
-            }
-
-            layers.forEach((layer, index) => {
-                const div = document.createElement('div');
-                div.className = `layer-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-3xl p-6`;
-                div.innerHTML = `
-                    <div class="flex items-center gap-x-4 mb-4">
-                        <div class="w-12 h-12 bg-${layer.color}-100 dark:bg-${layer.color}-900/30 text-${layer.color}-600 dark:text-${layer.color}-400 rounded-2xl flex items-center justify-center">
-                            <i class="fa-solid ${layer.icon} text-2xl"></i>
-                        </div>
-                        <div class="font-bold text-xl">${layer.name}</div>
-                    </div>
-                    <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">${layer.desc}</p>
-                `;
-                container.appendChild(div);
             });
         }
 
-        function generateWorkflowDiagram(title, features) {
-            const container = document.getElementById('mermaid-diagram');
-            
-            let mermaidCode = `graph TD
-                A[شروع کاربر] --> B[ورود به سیستم]
-                B --> C[ثبت‌نام / ورود]
-                C --> D[نمایش داشبورد]
-                D --> E[انتخاب ویژگی]
-                E --> F[پردازش و ذخیره]
-                F --> G[نمایش نتیجه]
-                G --> H[پایان]`;
-
-            // Customize based on features
-            if (features.some(f => f.includes('سبد') || f.includes('خرید'))) {
-                mermaidCode = `graph TD
-                    A[شروع] --> B[بررسی محصولات]
-                    B --> C[اضافه به سبد خرید]
-                    C --> D[پرداخت آنلاین]
-                    D --> E[ثبت سفارش]
-                    E --> F[پیگیری وضعیت سفارش]
-                    F --> G[پایان]`;
-            }
-
-            container.innerHTML = mermaidCode;
-            
-            // Render Mermaid
-            mermaid.initialize({ startOnLoad: false });
-            mermaid.run();
-        }
-
-        function generateTechStack(platform, features) {
-            const container = document.getElementById('tech-stack');
-            container.innerHTML = '';
-
-            let techs = [
-                { name: 'Frontend', items: 'HTML + Tailwind CSS / React' },
-                { name: 'Backend', items: 'Node.js / Python (FastAPI)' },
-                { name: 'Database', items: 'PostgreSQL / MongoDB' }
-            ];
-
-            if (platform === 'mobile' || platform === 'cross') {
-                techs.push({ name: 'Mobile', items: 'Flutter / React Native' });
-            }
-
-            if (features.some(f => f.includes('پرداخت'))) {
-                techs.push({ name: 'Payment', items: 'Stripe / Zarinpal' });
-            }
-
-            techs.forEach(tech => {
-                const div = document.createElement('div');
-                div.className = 'flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3 last:border-none last:pb-0';
-                div.innerHTML = `
-                    <div class="font-medium">${tech.name}</div>
-                    <div class="text-sm text-zinc-500">${tech.items}</div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function generateDevSteps(title, platform) {
-            const container = document.getElementById('dev-steps');
-            container.innerHTML = '';
-
-            const steps = [
-                '1. تعریف محصولات و نیازمندی‌ها',
-                '2. طراحی داتابیس و مدل‌ها',
-                '3. پیاده‌سازی لایه بک‌اند',
-                '4. ساخت رابط کاربری (UI/UX)',
-                '5. اتصال بک‌اند به فرونت‌اند',
-                '6. تست و ارزیابی',
-                '7. دپلوی و نشر'
-            ];
-
-            steps.forEach(step => {
-                const div = document.createElement('div');
-                div.className = 'flex items-start gap-x-3 py-1';
-                div.innerHTML = `
-                    <i class="fa-solid fa-check-circle text-emerald-500 mt-1"></i>
-                    <span class="text-sm">${step}</span>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // Initialize
         function init() {
             initTailwind();
-            mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
-
-            // Demo: Auto generate on load for better first impression
-            setTimeout(() => {
-                // Uncomment if you want auto demo
-                // document.getElementById('idea-title').value = "اپلیکیشن مدیریت پروژه تیمی";
-                // generateArchitecture();
-            }, 800);
+            // Optional: Auto-generate example on load for better UX
+            // setTimeout(() => { document.getElementById('topic').value = "تأثیر موسیقی بر مغز انسان"; generatePrompt(); }, 1200);
         }
 
         window.onload = init;
